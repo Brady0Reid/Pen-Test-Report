@@ -358,7 +358,7 @@ Below is a generic example showcasing a PowerShell-based disk wiping script. In 
 of your OSINT, Nmap, OpenVAS, or Metasploit sessions. For illustration, we show sample images related to a disk sanitization process:
 </p>
 <p align="center">
-    <img src=""C:\Users\brady\Downloads\Github1.png"" width="70%" alt="Launch the utility" /><br/><br/>
+    <img src="Github1.png"" width="70%" alt="Launch the utility" /><br/><br/>
     <img src="https://i.imgur.com/tcTyMUE.png" width="70%" alt="Select the disk" /><br/><br/>
     <img src="https://i.imgur.com/nCIbXbg.png" width="70%" alt="Number of passes" /><br/><br/>
     <img src="https://i.imgur.com/cdFHBiU.png" width="70%" alt="Confirm selection" /><br/><br/>

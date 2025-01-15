@@ -359,12 +359,11 @@ of your OSINT, Nmap, OpenVAS, or Metasploit sessions. For illustration, we show 
 </p>
 <p align="center">
     <img src="Github1.png"" width="70%" alt="Launch the utility" /><br/><br/>
-    <img src="https://i.imgur.com/tcTyMUE.png" width="70%" alt="Select the disk" /><br/><br/>
-    <img src="https://i.imgur.com/nCIbXbg.png" width="70%" alt="Number of passes" /><br/><br/>
-    <img src="https://i.imgur.com/cdFHBiU.png" width="70%" alt="Confirm selection" /><br/><br/>
-    <img src="https://i.imgur.com/JL945Ga.png" width="70%" alt="Process in progress" /><br/><br/>
-    <img src="https://i.imgur.com/K71yaM2.png" width="70%" alt="Sanitization complete" /><br/><br/>
-    <img src="https://i.imgur.com/AeZkvFQ.png" width="70%" alt="Wiped disk" /><br/><br/>
+    <img src="Github2.png"" width="70%" alt="Launch the utility" /><br/><br/>
+    <img src="Github3.png"" width="70%" alt="Launch the utility" /><br/><br/>
+    <img src="Github4.png"" width="70%" alt="Launch the utility" /><br/><br/>
+    <img src="Github5.png"" width="70%" alt="Launch the utility" /><br/><br/>
+    <img src="Github6.png"" width="70%" alt="Launch the utility" /><br/><br/>
 </p>
 <p>
 In a real Pen-Test report, replace these images with relevant screenshots of your scans, exploits, 

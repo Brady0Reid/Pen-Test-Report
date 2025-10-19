@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Pen-Test Report — Brady Reid</title>
-
+  <title>ITT-340 — Pen-Test Report — Brady Reid</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="Educational penetration testing report for ITT-340 by Brady Reid. Lab-only, sandbox assessments including OSINT, Nmap, OpenVAS and controlled exploitation demonstrations.">
   <style>
     :root{
-      --bg:#0b1220; --panel:#0f1a2b; --muted:#9fb0c8; --accent:#00a3ff; --glass: rgba(255,255,255,0.03);
-      --text:#e6eef6; --danger:#ff6b6b;
+      --bg:#08101a; --panel:#0f1a2b; --muted:#9fb0c8; --accent:#00a3ff;
+      --text:#e6eef6; --glass: rgba(255,255,255,0.03); --danger:#ff6b6b;
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:linear-gradient(180deg,#051021 0%,var(--bg) 100%);color:var(--text);padding:28px}
@@ -43,120 +43,175 @@
 </head>
 <body>
   <div class="wrap">
-    <!-- Banner: use the raw link or ?raw=true so GitHub serves the image -->
+
+    <!-- banner -->
     <div class="banner">
-      <img src="https://github.com/Brady0Reid/Banner.jpg/blob/main/Banner.jpg?raw=true" alt="Banner">
+      <!-- replace with your banner raw link if different -->
+      <img src="https://github.com/Brady0Reid/Banner.jpg/blob/main/Banner.jpg?raw=true" alt="Brady Reid Banner">
     </div>
 
+    <!-- header -->
     <header>
       <div class="avatar">BR</div>
       <div>
-        <h1>Pen-Test Report — ITT-340</h1>
-        <div class="subtitle">Educational penetration testing engagement — sandbox environment</div>
-        <div class="meta">Author: <strong>Brady Reid</strong> · Updated: <strong>Nov 3, 2024 (v2.0)</strong></div>
+        <h1>ITT-340 — Penetration Test Report</h1>
+        <div class="subtitle">Author: Brady Reid · Educational sandbox engagement</div>
+        <div class="meta">Version: <strong>2.0</strong> · Updated: <strong>Nov 3, 2024</strong></div>
       </div>
     </header>
 
     <div class="grid">
-      <!-- main content -->
+      <!-- left/main -->
       <main class="card">
-        <h2>Description</h2>
-        <p class="muted">This project demonstrates a penetration testing engagement performed within a controlled laboratory. It covers the full testing lifecycle: passive OSINT, automated reconnaissance, network scanning (Nmap), vulnerability assessment (OpenVAS), exploitation demonstrations (Metasploit, lab-only), and payload testing in an isolated sandbox.</p>
+        <h2>Executive Summary</h2>
+        <p class="muted">
+          This report documents a controlled penetration testing engagement (ITT-340). Scans and lab-only exploit demonstrations were performed against isolated virtual machines to illustrate typical threats: outdated services, weak encryption, and misconfigurations. The exercises validated potential unauthorized access and persistence in a sandbox environment. Recommended next steps emphasize patching, hardening, access control, and monitoring.
+        </p>
 
         <div class="section">
-          <h2>Disclaimer</h2>
-          <p class="warn">LAB ONLY — All actions were performed in isolated virtual machines under explicit educational permission. This report is for learning and remediation planning only.</p>
+          <h2>Document Properties & Versioning</h2>
+          <table>
+            <thead><tr><th>Version</th><th>Date</th><th>Author</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>1.0</td><td>10/04/2024</td><td>Brady Reid</td><td>Initial OSINT & Recon</td></tr>
+              <tr><td>1.2</td><td>10/05/2024</td><td>Brady Reid</td><td>Automated Recon</td></tr>
+              <tr><td>1.3</td><td>10/12/2024</td><td>Brady Reid</td><td>Nmap Scanning</td></tr>
+              <tr><td>1.4</td><td>10/20/2024</td><td>Brady Reid</td><td>OpenVAS Assessment</td></tr>
+              <tr><td>1.5</td><td>10/29/2024</td><td>Brady Reid</td><td>Exploit Demos</td></tr>
+              <tr><td>2.0</td><td>11/03/2024</td><td>Brady Reid</td><td>Custom Payload Summary (redacted)</td></tr>
+            </tbody>
+          </table>
         </div>
 
         <div class="section">
-          <h2>Environments</h2>
+          <h2>Disclaimer</h2>
+          <p class="warn">LAB ONLY — All actions were performed in isolated virtual machines under educational permission. The public report omits command-level exploit steps and payload details. Sensitive logs and technical appendices are kept in a secure, instructor-approved record.</p>
+        </div>
+
+        <div class="section">
+          <h2>Passive OSINT</h2>
+          <p class="muted"><strong>Summary:</strong> Public information about the selected organization (Discount Tire) was collected using MXtoolbox, Whois, LinkedIn, Sublist3r, and similar tools. Findings included DNS records, subdomains, executive contact patterns, and public document metadata.</p>
+          <p class="muted"><strong>Recommendations:</strong> Audit public-facing content, sanitize document metadata, limit social exposure, and implement DMARC/DKIM for email protection.</p>
+        </div>
+
+        <div class="section">
+          <h2>Automating Reconnaissance</h2>
+          <p class="muted"><strong>Summary:</strong> Tools such as SpiderFoot, DNSenum, Metagoofil, and Sherlock were used to aggregate hidden or less-obvious public data (document metadata, additional domains, username re-use across platforms).</p>
+          <p class="muted"><strong>Recommendations:</strong> Periodic scanning for data leakage, remove stale public artifacts, and enforce data retention policies for public resources.</p>
+        </div>
+
+        <div class="section">
+          <h2>Nmap Scanning</h2>
+          <p class="muted"><strong>Summary:</strong> Nmap scans against lab VMs identified open ports and services including FTP, SSH, HTTP, Samba, MySQL, and PostgreSQL. OS fingerprinting indicated legacy Windows Server/XP systems on one host.</p>
+          <p class="muted"><strong>Findings & Recommendations:</strong> Upgrade EOL systems (e.g., Windows XP/Server 2003), update Apache/MySQL versions, and restrict management ports (SSH, RDP) through firewall rules or VPN-only access.</p>
+        </div>
+
+        <div class="section">
+          <h2>OpenVAS Vulnerability Assessment</h2>
+          <p class="muted"><strong>Summary:</strong> OpenVAS flagged high to low severity issues: EOL OS, weak SSH algorithms, cleartext HTTP, TCP timestamp disclosure, and ICMP timestamp replies.</p>
+          <p class="muted"><strong>Remediations:</strong> Reconfigure SSH to modern algorithms (ED25519, ECDH, HMAC-SHA2), migrate HTTP services to HTTPS, disable TCP/ICMP timestamps where possible, and replace EOL systems with supported OS versions.</p>
+        </div>
+
+        <div class="section">
+          <h2>Exploitation — High Level (Lab-only)</h2>
+          <p class="muted">Using Metasploit in an isolated lab, several vulnerabilities identified during scanning were exercised to validate impact. Demonstrations included remote code execution on a vulnerable web application, privilege escalation on a legacy Windows VM, and exploitation of a Samba misconfiguration to access shared data. <em>Command-level steps and payload generation are intentionally omitted.</em></p>
+          <p class="muted"><strong>Security Controls Suggested:</strong> Patch critical vulnerabilities, apply strict ACLs for file shares, remove or isolate legacy systems, and enable endpoint detection & response (EDR).</p>
+        </div>
+
+        <div class="section">
+          <h2>Custom Payload — Summary (Redacted)</h2>
+          <p class="muted">A custom reverse-TCP payload was created and tested in the lab to demonstrate persistence risk. The public report does not reproduce the payload generation commands. All such artifacts are secured in the instructor-approved lab notebook.</p>
+          <p class="muted"><strong>Recommendation:</strong> Harden host defenses, implement application whitelisting, and monitor for suspicious outbound connections.</p>
+        </div>
+
+        <div class="section">
+          <h2>Findings — Consolidated</h2>
           <ul class="muted">
-            <li><strong>Attacker:</strong> Kali Linux (VM)</li>
-            <li><strong>Targets:</strong> Ubuntu server (lab), Windows XP / Server 2003 (lab)</li>
-            <li><strong>Network:</strong> Isolated VM network — no external testing</li>
+            <li>Outdated operating systems and services present a high risk.</li>
+            <li>Weak or deprecated cryptographic settings increase exposure.</li>
+            <li>Cleartext services may allow interception and data leakage.</li>
+            <li>Misconfigured file shares can lead to data access and exfiltration.</li>
           </ul>
         </div>
 
         <div class="section">
-          <h2>Languages & Utilities</h2>
-          <div class="badges">
-            <span class="badge">Kali Linux</span><span class="badge">Nmap</span><span class="badge">OpenVAS</span>
-            <span class="badge">Metasploit</span><span class="badge">MSFVenom (lab-only)</span><span class="badge">SpiderFoot</span>
-          </div>
-        </div>
-
-        <div class="section">
-          <h2>Executive Summary</h2>
-          <p class="muted">The lab assessment found outdated services, weak encryption, and misconfigurations. Demonstrated impact included potential privilege escalation and data access. Recommended: patching, remove EOL systems, harden TLS/SSH, restrict management ports, and deploy endpoint monitoring.</p>
-        </div>
-
-        <div class="section">
-          <h2>Findings & Recommendations</h2>
-          <h3 class="small">Passive OSINT</h3>
-          <p class="muted">Public metadata and subdomains discovered. Recommendation: audit public docs and enforce data hygiene.</p>
-
-          <h3 class="small">Network Scanning (Nmap)</h3>
-          <p class="muted">Open ports and outdated service versions discovered. Recommendation: patch/upgrade and restrict ports via firewall/VPN.</p>
-
-          <h3 class="small">Vulnerability Assessment (OpenVAS)</h3>
-          <p class="muted">Weak ciphers/cleartext flagged. Recommendation: enforce modern TLS/SSH and remove obsolete protocols.</p>
-
-          <h3 class="small">Exploitation (Lab-only)</h3>
-          <p class="muted">Exploits validated impact; command-level and payload details are kept securely in the lab notebook. Recommendation: enable EDR and re-scan post-remediation.</p>
+          <h2>Recommendations — Priority Plan</h2>
+          <ol class="muted">
+            <li>Immediate: Patch critical vulnerabilities and isolate EOL hosts.</li>
+            <li>Short-term (1–3 months): Harden SSH/TLS, restrict management ports, and enforce least privilege.</li>
+            <li>Medium-term: Deploy centralized logging and EDR; schedule recurring vulnerability scans.</li>
+            <li>Long-term: Implement security policy updates and conduct periodic penetration testing.</li>
+          </ol>
         </div>
 
         <div class="section">
           <h2>Evidence (Lab Screenshots)</h2>
           <div class="screens">
-            <img src="Github1.png" alt="DNS Enumeration using dnsenum">
-            <img src="Github2.png" alt="Username enumeration with Sherlock">
-            <img src="Github3.png" alt="Nmap scan output (Windows XP/Server 2003)">
-            <img src="Github4.png" alt="TheHarvester / OSINT results">
-            <img src="Github5.jpg" alt="Metasploit exploit setup (lab)">
-            <img src="Github6.jpg" alt="Metasploit module output (lab)">
+            <img src="Github1.png" alt="DNS Enumeration (dnsenum)">
+            <img src="Github2.png" alt="Username enumeration (sherlock)">
+            <img src="Github3.png" alt="Nmap service scan">
+            <img src="Github4.png" alt="OSINT aggregation (theharvester)">
+            <img src="Github5.jpg" alt="Metasploit module setup (lab)">
+            <img src="Github6.jpg" alt="Metasploit output (lab)">
           </div>
-          <p class="small">All screenshots were captured from an isolated lab network for educational purposes (ITT-340). Replace filenames if your images differ.</p>
+          <p class="small">Screenshots captured from an isolated lab environment. Filenames should match images in the repository root.</p>
         </div>
 
         <div class="section">
-          <h2>Conclusion & Next Steps</h2>
-          <p class="muted">Prioritize patching and replacement of EOL systems; harden network services; implement centralized logging and detection; schedule a follow-up verification scan and remediation audit.</p>
+          <h2>Appendix & Technical Notes</h2>
+          <p class="muted">This public page deliberately omits step-by-step exploitation commands and payloads. The full technical appendix (including sanitized logs and instructor-approved details) is archived in a secure lab notebook. For instructor access or review, contact the author directly (see contact panel).</p>
         </div>
+
+        <div class="section small">
+          <!-- Citation to uploaded source file -->
+          Source (project document): :contentReference[oaicite:1]{index=1}
+        </div>
+
       </main>
 
       <!-- right column -->
       <aside class="card right">
         <div class="section">
           <h3>Quick Links</h3>
-          <p class="small"><a class="btn" href="https://github.com/Brady0Reid/Pen-Test-Report" target="_blank">Repository</a> <a class="btn" href="mailto:bradycreid@protonmail.com">Contact</a></p>
+          <p class="small">
+            <a class="btn" href="https://github.com/Brady0Reid/Pen-Test-Report" target="_blank">Repository</a>
+            <a class="btn" href="mailto:bradycreid@protonmail.com">Contact</a>
+            <a class="btn" href="https://brady0reid.github.io/Pen-Test-Report/" target="_blank">Live Page</a>
+          </p>
         </div>
 
         <div class="section">
           <h3>Project Facts</h3>
           <table>
-            <tr><th>Scope</th><td>Lab VMs only</td></tr>
-            <tr><th>Duration</th><td>Oct — Nov 2024</td></tr>
+            <tr><th>Scope</th><td>Isolated lab VMs</td></tr>
+            <tr><th>Course</th><td>ITT-340</td></tr>
             <tr><th>Author</th><td>Brady Reid</td></tr>
             <tr><th>Version</th><td>2.0</td></tr>
           </table>
         </div>
 
         <div class="section">
-          <h3>At-a-glance</h3>
+          <h3>At-a-glance Remediations</h3>
           <ul class="muted">
-            <li>Patch & upgrade EOL systems</li>
-            <li>Harden TLS/SSH</li>
+            <li>Patch & replace EOL systems</li>
+            <li>Harden TLS/SSH settings</li>
             <li>Restrict remote access</li>
-            <li>Deploy endpoint detection</li>
-            <li>Re-scan after remediation</li>
+            <li>Deploy EDR and centralized logging</li>
+            <li>Re-test after remediation</li>
           </ul>
+        </div>
+
+        <div class="section">
+          <h3>Contact</h3>
+          <p class="small">Brady Reid — <a href="mailto:bradycreid@protonmail.com">bradycreid@protonmail.com</a><br><a href="https://www.linkedin.com/in/brady-reidin" target="_blank">LinkedIn</a></p>
         </div>
       </aside>
     </div>
 
     <footer>
-      <div class="small">© Brady Reid — Penetration testing performed in an isolated lab environment for educational purposes only.</div>
+      <div class="small">© Brady Reid — Penetration testing and documentation performed in an isolated lab environment for educational purposes only.</div>
     </footer>
+
   </div>
 </body>
 </html>

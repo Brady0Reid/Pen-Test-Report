@@ -2,216 +2,184 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ITT-340 — Pen-Test Report — Brady Reid</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ITT-340 Penetration Test Report — Brady Reid</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <meta name="description" content="Educational penetration testing report for ITT-340 by Brady Reid. Lab-only, sandbox assessments including OSINT, Nmap, OpenVAS and controlled exploitation demonstrations.">
   <style>
-    :root{
-      --bg:#08101a; --panel:#0f1a2b; --muted:#9fb0c8; --accent:#00a3ff;
-      --text:#e6eef6; --glass: rgba(255,255,255,0.03); --danger:#ff6b6b;
+    :root {
+      --bg: #08101a;
+      --panel: #0f1a2b;
+      --muted: #9fb0c8;
+      --accent: #00a3ff;
+      --text: #e6eef6;
+      --glass: rgba(255,255,255,0.03);
+      --danger: #ff6b6b;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:linear-gradient(180deg,#051021 0%,var(--bg) 100%);color:var(--text);padding:28px}
-    .wrap{max-width:1100px;margin:0 auto}
-    .banner{width:100%;height:220px;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
-    .banner img{width:100%;height:100%;object-fit:cover;display:block}
-    header{display:flex;gap:18px;align-items:center;margin-top:18px}
-    .avatar{width:84px;height:84px;border-radius:10px;background:linear-gradient(180deg,#081023,#0f1a2b);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:var(--accent)}
-    h1{margin:0;font-size:26px}
-    .subtitle{color:var(--muted);margin-top:6px;font-size:14px}
-    .meta{color:var(--muted);font-size:13px;margin-top:6px}
-    .grid{display:grid;grid-template-columns:1fr 320px;gap:20px;margin-top:20px}
-    .card{background:linear-gradient(180deg,var(--panel), rgba(255,255,255,0.02));padding:18px;border-radius:10px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
-    .card h2{margin:0 0 10px 0;font-size:18px}
-    p{color:var(--muted);line-height:1.5;margin:0 0 12px 0}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{padding:8px 6px;border-bottom:1px dashed rgba(255,255,255,0.03);text-align:left;color:var(--muted);font-size:14px}
-    th{color:var(--text);font-weight:600}
-    .badges{display:flex;flex-wrap:wrap;gap:8px}
-    .badge{background:var(--glass);padding:6px 10px;border-radius:999px;font-size:13px;color:var(--text);border:1px solid rgba(255,255,255,0.02)}
-    .section{margin-top:16px}
-    .muted{color:var(--muted)}
-    .warn{display:inline-block;background:linear-gradient(90deg,var(--danger),#ff9f9f);color:white;padding:6px 8px;border-radius:8px;font-weight:600;font-size:13px;margin-bottom:10px}
-    .screens{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
-    .screens img{width:100%;height:170px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
-    .small{font-size:13px;color:var(--muted)}
-    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:var(--text);text-decoration:none;font-size:13px}
-    footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center}
-    @media (max-width:980px){ .grid{grid-template-columns:1fr} .screens{grid-template-columns:1fr} header{flex-direction:row} }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: linear-gradient(180deg, #051021 0%, var(--bg) 100%);
+      color: var(--text);
+      padding: 28px;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    .banner {
+      width: 100%; height: 220px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+    .banner img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block;
+    }
+    header { display: flex; gap: 18px; align-items: center; margin-top: 18px; }
+    .avatar {
+      width: 84px; height: 84px;
+      border-radius: 10px;
+      background: linear-gradient(180deg,#081023,#0f1a2b);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 28px; color: var(--accent);
+    }
+    h1 { margin: 0; font-size: 26px; }
+    .subtitle { color: var(--muted); margin-top: 6px; font-size: 14px; }
+    .meta { color: var(--muted); font-size: 13px; margin-top: 6px; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .card {
+      background: linear-gradient(180deg,var(--panel),rgba(255,255,255,0.02));
+      padding: 18px;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    }
+    .card h2 { margin: 0 0 10px 0; font-size:18px; }
+    p { color: var(--muted); line-height:1.5; margin:0 0 12px 0; }
+    table { width: 100%; border-collapse: collapse; margin-top:10px; }
+    th, td {
+      padding:8px 6px;
+      border-bottom:1px dashed rgba(255,255,255,0.03);
+      text-align:left; color: var(--muted); font-size:14px;
+    }
+    th { color: var(--text); font-weight:600; }
+    .badges { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;}
+    .badge {
+      background: var(--glass);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:13px;
+      color: var(--text);
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .section { margin-top:16px; }
+    .muted { color: var(--muted); }
+    .warn {
+      display:inline-block;
+      background: linear-gradient(90deg,var(--danger),#ff9f9f);
+      color: white;
+      padding:6px 8px;
+      border-radius:8px;
+      font-weight:600;
+      font-size:13px;
+      margin-bottom:10px;
+    }
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap:10px;
+      margin-top:12px;
+    }
+    .screens img {
+      width:100%;
+      height:170px;
+      object-fit: cover;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .small { font-size:13px; color: var(--muted); }
+    .btn {
+      background: transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      padding:8px 10px;
+      border-radius:8px;
+      color: var(--text);
+      text-decoration: none;
+      font-size:13px;
+    }
+    footer { margin-top:20px; color: var(--muted); font-size:13px; text-align:center; }
+    @media (max-width:980px){
+      .grid{grid-template-columns:1fr;}
+      .screens{grid-template-columns:1fr;}
+      header{flex-direction:column; gap:12px;}
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-
-    <!-- banner -->
     <div class="banner">
-      <!-- replace with your banner raw link if different -->
-      <img src="https://github.com/Brady0Reid/Banner.jpg/blob/main/Banner.jpg?raw=true" alt="Brady Reid Banner">
+      <img src="https://github.com/Brady0Reid/Pen-Test-Report/blob/main/Banner.jpg?raw=true" alt="Banner">
     </div>
 
-    <!-- header -->
     <header>
       <div class="avatar">BR</div>
       <div>
-        <h1>ITT-340 — Penetration Test Report</h1>
-        <div class="subtitle">Author: Brady Reid · Educational sandbox engagement</div>
-        <div class="meta">Version: <strong>2.0</strong> · Updated: <strong>Nov 3, 2024</strong></div>
+        <h1>ITT-340 Penetration Test Report</h1>
+        <div class="subtitle">Educational sandbox engagement — Brady Reid</div>
+        <div class="meta">Version 2.0 · Updated Nov 3 2024</div>
       </div>
     </header>
 
     <div class="grid">
-      <!-- left/main -->
       <main class="card">
         <h2>Executive Summary</h2>
-        <p class="muted">
-          This report documents a controlled penetration testing engagement (ITT-340). Scans and lab-only exploit demonstrations were performed against isolated virtual machines to illustrate typical threats: outdated services, weak encryption, and misconfigurations. The exercises validated potential unauthorized access and persistence in a sandbox environment. Recommended next steps emphasize patching, hardening, access control, and monitoring.
-        </p>
+        <p class="muted">This penetration test focused on identifying vulnerabilities within a controlled lab environment simulating real-world systems. Key findings included outdated software, weak encryption algorithms, and misconfigurations. Exploitations demonstrated unauthorized access via known vulnerabilities, culminating in potential data exfiltration and persistent access using custom payloads.</p>
+        <p class="muted">Mitigation strategies include regular patching, upgrading end-of-life operating systems, restricting SSH/SMB services, and using encryption best practices. By following these recommendations, organizations can reduce the attack surface and strengthen their security posture.</p>
 
         <div class="section">
-          <h2>Document Properties & Versioning</h2>
+          <h2>Document Properties (Version Control)</h2>
           <table>
-            <thead><tr><th>Version</th><th>Date</th><th>Author</th><th>Notes</th></tr></thead>
+            <thead><tr><th>Version</th><th>Date</th><th>Author</th><th>Changes</th></tr></thead>
             <tbody>
-              <tr><td>1.0</td><td>10/04/2024</td><td>Brady Reid</td><td>Initial OSINT & Recon</td></tr>
-              <tr><td>1.2</td><td>10/05/2024</td><td>Brady Reid</td><td>Automated Recon</td></tr>
-              <tr><td>1.3</td><td>10/12/2024</td><td>Brady Reid</td><td>Nmap Scanning</td></tr>
-              <tr><td>1.4</td><td>10/20/2024</td><td>Brady Reid</td><td>OpenVAS Assessment</td></tr>
-              <tr><td>1.5</td><td>10/29/2024</td><td>Brady Reid</td><td>Exploit Demos</td></tr>
-              <tr><td>2.0</td><td>11/03/2024</td><td>Brady Reid</td><td>Custom Payload Summary (redacted)</td></tr>
+              <tr><td>1.0</td><td>10/04/2024</td><td>Brady Reid</td><td>Added Passive Corporate Recon OSINT</td></tr>
+              <tr><td>1.2</td><td>10/05/2024</td><td>Brady Reid</td><td>Added Automating Information Recon</td></tr>
+              <tr><td>1.3</td><td>10/12/2024</td><td>Brady Reid</td><td>Added Nmap Scan</td></tr>
+              <tr><td>1.4</td><td>10/20/2024</td><td>Brady Reid</td><td>Added OpenVAS Scan</td></tr>
+              <tr><td>1.5</td><td>10/29/2024</td><td>Brady Reid</td><td>Added Metasploit</td></tr>
+              <tr><td>2.0</td><td>11/03/2024</td><td>Brady Reid</td><td>Added Custom Payload Summary</td></tr>
             </tbody>
           </table>
         </div>
 
         <div class="section">
-          <h2>Disclaimer</h2>
-          <p class="warn">LAB ONLY — All actions were performed in isolated virtual machines under educational permission. The public report omits command-level exploit steps and payload details. Sensitive logs and technical appendices are kept in a secure, instructor-approved record.</p>
-        </div>
-
-        <div class="section">
           <h2>Passive OSINT</h2>
-          <p class="muted"><strong>Summary:</strong> Public information about the selected organization (Discount Tire) was collected using MXtoolbox, Whois, LinkedIn, Sublist3r, and similar tools. Findings included DNS records, subdomains, executive contact patterns, and public document metadata.</p>
-          <p class="muted"><strong>Recommendations:</strong> Audit public-facing content, sanitize document metadata, limit social exposure, and implement DMARC/DKIM for email protection.</p>
+          <p class="muted"><strong>Summary:</strong> Publicly available data for “Discount Tire” (selected company) was collected using MXtoolbox, Whois, LinkedIn, Sublist3r and others. Domain records, emails, subdomains, and document metadata were identified.</p>
+          <p class="muted"><strong>Recommendations:</strong> Use social media carefully; limit personal/company data exposure. Avoid posting sensitive internal information on public websites. Regularly review privacy settings and corporate policies for data leaks.</p>
         </div>
 
         <div class="section">
-          <h2>Automating Reconnaissance</h2>
-          <p class="muted"><strong>Summary:</strong> Tools such as SpiderFoot, DNSenum, Metagoofil, and Sherlock were used to aggregate hidden or less-obvious public data (document metadata, additional domains, username re-use across platforms).</p>
-          <p class="muted"><strong>Recommendations:</strong> Periodic scanning for data leakage, remove stale public artifacts, and enforce data retention policies for public resources.</p>
+          <h2>Automated Information Recon</h2>
+          <p class="muted"><strong>Summary:</strong> Tools such as SpiderFoot, DNSenum, Metagoofil, and Sherlock were employed to gather hidden OSINT artifacts and metadata from public resources.</p>
+          <p class="muted"><strong>Recommendations:</strong> Periodically audit and remove old or sensitive data from public-facing sites. Use crawlers to self-assess possible exposures. Review social media and online service accounts for username exposures.</p>
         </div>
 
         <div class="section">
-          <h2>Nmap Scanning</h2>
-          <p class="muted"><strong>Summary:</strong> Nmap scans against lab VMs identified open ports and services including FTP, SSH, HTTP, Samba, MySQL, and PostgreSQL. OS fingerprinting indicated legacy Windows Server/XP systems on one host.</p>
-          <p class="muted"><strong>Findings & Recommendations:</strong> Upgrade EOL systems (e.g., Windows XP/Server 2003), update Apache/MySQL versions, and restrict management ports (SSH, RDP) through firewall rules or VPN-only access.</p>
+          <h2>Nmap Scan</h2>
+          <p class="muted"><strong>Summary:</strong> Nmap scans were conducted on two VM targets to identify open ports, services, and OS fingerprinting. Many outdated services (FTP, HTTP, MySQL) were found, along with legacy Windows OS on one host.</p>
+          <p class="muted"><strong>Recommendations:</strong> Upgrade Apache from version 2.2.8. Restrict SSH (port 22) to trusted IPs. For Host 192.168.0.3, upgrade from Windows XP/Server 2003 to a supported OS. Disable SMB ports (139/445) when not needed.</p>
         </div>
 
         <div class="section">
           <h2>OpenVAS Vulnerability Assessment</h2>
-          <p class="muted"><strong>Summary:</strong> OpenVAS flagged high to low severity issues: EOL OS, weak SSH algorithms, cleartext HTTP, TCP timestamp disclosure, and ICMP timestamp replies.</p>
-          <p class="muted"><strong>Remediations:</strong> Reconfigure SSH to modern algorithms (ED25519, ECDH, HMAC-SHA2), migrate HTTP services to HTTPS, disable TCP/ICMP timestamps where possible, and replace EOL systems with supported OS versions.</p>
+          <p class="muted"><strong>Summary:</strong> OpenVAS scans uncovered outdated encryption protocols, end-of-life operating systems, and clear-text transmissions.</p>
+          <p class="muted"><strong>Remediation:</strong> Upgrade or replace EOL OS. Reconfigure weak SSH algorithms. Enforce HTTPS instead of HTTP. Disable TCP timestamps and ICMP timestamp replies.</p>
         </div>
 
         <div class="section">
-          <h2>Exploitation — High Level (Lab-only)</h2>
-          <p class="muted">Using Metasploit in an isolated lab, several vulnerabilities identified during scanning were exercised to validate impact. Demonstrations included remote code execution on a vulnerable web application, privilege escalation on a legacy Windows VM, and exploitation of a Samba misconfiguration to access shared data. <em>Command-level steps and payload generation are intentionally omitted.</em></p>
-          <p class="muted"><strong>Security Controls Suggested:</strong> Patch critical vulnerabilities, apply strict ACLs for file shares, remove or isolate legacy systems, and enable endpoint detection & response (EDR).</p>
-        </div>
-
-        <div class="section">
-          <h2>Custom Payload — Summary (Redacted)</h2>
-          <p class="muted">A custom reverse-TCP payload was created and tested in the lab to demonstrate persistence risk. The public report does not reproduce the payload generation commands. All such artifacts are secured in the instructor-approved lab notebook.</p>
-          <p class="muted"><strong>Recommendation:</strong> Harden host defenses, implement application whitelisting, and monitor for suspicious outbound connections.</p>
-        </div>
-
-        <div class="section">
-          <h2>Findings — Consolidated</h2>
-          <ul class="muted">
-            <li>Outdated operating systems and services present a high risk.</li>
-            <li>Weak or deprecated cryptographic settings increase exposure.</li>
-            <li>Cleartext services may allow interception and data leakage.</li>
-            <li>Misconfigured file shares can lead to data access and exfiltration.</li>
-          </ul>
-        </div>
-
-        <div class="section">
-          <h2>Recommendations — Priority Plan</h2>
-          <ol class="muted">
-            <li>Immediate: Patch critical vulnerabilities and isolate EOL hosts.</li>
-            <li>Short-term (1–3 months): Harden SSH/TLS, restrict management ports, and enforce least privilege.</li>
-            <li>Medium-term: Deploy centralized logging and EDR; schedule recurring vulnerability scans.</li>
-            <li>Long-term: Implement security policy updates and conduct periodic penetration testing.</li>
-          </ol>
-        </div>
-
-        <div class="section">
-          <h2>Evidence (Lab Screenshots)</h2>
-          <div class="screens">
-            <img src="Github1.png" alt="DNS Enumeration (dnsenum)">
-            <img src="Github2.png" alt="Username enumeration (sherlock)">
-            <img src="Github3.png" alt="Nmap service scan">
-            <img src="Github4.png" alt="OSINT aggregation (theharvester)">
-            <img src="Github5.jpg" alt="Metasploit module setup (lab)">
-            <img src="Github6.jpg" alt="Metasploit output (lab)">
-          </div>
-          <p class="small">Screenshots captured from an isolated lab environment. Filenames should match images in the repository root.</p>
-        </div>
-
-        <div class="section">
-          <h2>Appendix & Technical Notes</h2>
-          <p class="muted">This public page deliberately omits step-by-step exploitation commands and payloads. The full technical appendix (including sanitized logs and instructor-approved details) is archived in a secure lab notebook. For instructor access or review, contact the author directly (see contact panel).</p>
-        </div>
-
-        <div class="section small">
-          <!-- Citation to uploaded source file -->
-          Source (project document): :contentReference[oaicite:1]{index=1}
-        </div>
-
-      </main>
-
-      <!-- right column -->
-      <aside class="card right">
-        <div class="section">
-          <h3>Quick Links</h3>
-          <p class="small">
-            <a class="btn" href="https://github.com/Brady0Reid/Pen-Test-Report" target="_blank">Repository</a>
-            <a class="btn" href="mailto:bradycreid@protonmail.com">Contact</a>
-            <a class="btn" href="https://brady0reid.github.io/Pen-Test-Report/" target="_blank">Live Page</a>
-          </p>
-        </div>
-
-        <div class="section">
-          <h3>Project Facts</h3>
-          <table>
-            <tr><th>Scope</th><td>Isolated lab VMs</td></tr>
-            <tr><th>Course</th><td>ITT-340</td></tr>
-            <tr><th>Author</th><td>Brady Reid</td></tr>
-            <tr><th>Version</th><td>2.0</td></tr>
-          </table>
-        </div>
-
-        <div class="section">
-          <h3>At-a-glance Remediations</h3>
-          <ul class="muted">
-            <li>Patch & replace EOL systems</li>
-            <li>Harden TLS/SSH settings</li>
-            <li>Restrict remote access</li>
-            <li>Deploy EDR and centralized logging</li>
-            <li>Re-test after remediation</li>
-          </ul>
-        </div>
-
-        <div class="section">
-          <h3>Contact</h3>
-          <p class="small">Brady Reid — <a href="mailto:bradycreid@protonmail.com">bradycreid@protonmail.com</a><br><a href="https://www.linkedin.com/in/brady-reidin" target="_blank">LinkedIn</a></p>
-        </div>
-      </aside>
-    </div>
-
-    <footer>
-      <div class="small">© Brady Reid — Penetration testing and documentation performed in an isolated lab environment for educational purposes only.</div>
-    </footer>
-
-  </div>
-</body>
-</html>
+          <h2>Exploitation (Lab-Only)</h2>
+          <p class="muted"><strong>Summary:</strong> 
+::contentReference[oaicite:1]{index=1}

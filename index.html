@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pen-Test Report — Brady Reid</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#0f1a2b; --muted:#9fb0c8; --accent:#00a3ff; --glass: rgba(255,255,255,0.03);
+      --text:#e6eef6; --danger:#ff6b6b;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:linear-gradient(180deg,#051021 0%,var(--bg) 100%);color:var(--text);padding:28px}
+    .wrap{max-width:1100px;margin:0 auto}
+    .banner{width:100%;height:220px;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+    .banner img{width:100%;height:100%;object-fit:cover;display:block}
+    header{display:flex;gap:18px;align-items:center;margin-top:18px}
+    .avatar{width:84px;height:84px;border-radius:10px;background:linear-gradient(180deg,#081023,#0f1a2b);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:28px;color:var(--accent)}
+    h1{margin:0;font-size:26px}
+    .subtitle{color:var(--muted);margin-top:6px;font-size:14px}
+    .meta{color:var(--muted);font-size:13px;margin-top:6px}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:20px;margin-top:20px}
+    .card{background:linear-gradient(180deg,var(--panel), rgba(255,255,255,0.02));padding:18px;border-radius:10px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+    .card h2{margin:0 0 10px 0;font-size:18px}
+    p{color:var(--muted);line-height:1.5;margin:0 0 12px 0}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px 6px;border-bottom:1px dashed rgba(255,255,255,0.03);text-align:left;color:var(--muted);font-size:14px}
+    th{color:var(--text);font-weight:600}
+    .badges{display:flex;flex-wrap:wrap;gap:8px}
+    .badge{background:var(--glass);padding:6px 10px;border-radius:999px;font-size:13px;color:var(--text);border:1px solid rgba(255,255,255,0.02)}
+    .section{margin-top:16px}
+    .muted{color:var(--muted)}
+    .warn{display:inline-block;background:linear-gradient(90deg,var(--danger),#ff9f9f);color:white;padding:6px 8px;border-radius:8px;font-weight:600;font-size:13px;margin-bottom:10px}
+    .screens{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+    .screens img{width:100%;height:170px;object-fit:cover;border-radius:8px;border:1px solid rgba(255,255,255,0.03)}
+    .small{font-size:13px;color:var(--muted)}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:var(--text);text-decoration:none;font-size:13px}
+    footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center}
+    @media (max-width:980px){ .grid{grid-template-columns:1fr} .screens{grid-template-columns:1fr} header{flex-direction:row} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Banner: use the raw link or ?raw=true so GitHub serves the image -->
+    <div class="banner">
+      <img src="https://github.com/Brady0Reid/Banner.jpg/blob/main/Banner.jpg?raw=true" alt="Banner">
+    </div>
+
+    <header>
+      <div class="avatar">BR</div>
+      <div>
+        <h1>Pen-Test Report — ITT-340</h1>
+        <div class="subtitle">Educational penetration testing engagement — sandbox environment</div>
+        <div class="meta">Author: <strong>Brady Reid</strong> · Updated: <strong>Nov 3, 2024 (v2.0)</strong></div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- main content -->
+      <main class="card">
+        <h2>Description</h2>
+        <p class="muted">This project demonstrates a penetration testing engagement performed within a controlled laboratory. It covers the full testing lifecycle: passive OSINT, automated reconnaissance, network scanning (Nmap), vulnerability assessment (OpenVAS), exploitation demonstrations (Metasploit, lab-only), and payload testing in an isolated sandbox.</p>
+
+        <div class="section">
+          <h2>Disclaimer</h2>
+          <p class="warn">LAB ONLY — All actions were performed in isolated virtual machines under explicit educational permission. This report is for learning and remediation planning only.</p>
+        </div>
+
+        <div class="section">
+          <h2>Environments</h2>
+          <ul class="muted">
+            <li><strong>Attacker:</strong> Kali Linux (VM)</li>
+            <li><strong>Targets:</strong> Ubuntu server (lab), Windows XP / Server 2003 (lab)</li>
+            <li><strong>Network:</strong> Isolated VM network — no external testing</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>Languages & Utilities</h2>
+          <div class="badges">
+            <span class="badge">Kali Linux</span><span class="badge">Nmap</span><span class="badge">OpenVAS</span>
+            <span class="badge">Metasploit</span><span class="badge">MSFVenom (lab-only)</span><span class="badge">SpiderFoot</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2>Executive Summary</h2>
+          <p class="muted">The lab assessment found outdated services, weak encryption, and misconfigurations. Demonstrated impact included potential privilege escalation and data access. Recommended: patching, remove EOL systems, harden TLS/SSH, restrict management ports, and deploy endpoint monitoring.</p>
+        </div>
+
+        <div class="section">
+          <h2>Findings & Recommendations</h2>
+          <h3 class="small">Passive OSINT</h3>
+          <p class="muted">Public metadata and subdomains discovered. Recommendation: audit public docs and enforce data hygiene.</p>
+
+          <h3 class="small">Network Scanning (Nmap)</h3>
+          <p class="muted">Open ports and outdated service versions discovered. Recommendation: patch/upgrade and restrict ports via firewall/VPN.</p>
+
+          <h3 class="small">Vulnerability Assessment (OpenVAS)</h3>
+          <p class="muted">Weak ciphers/cleartext flagged. Recommendation: enforce modern TLS/SSH and remove obsolete protocols.</p>
+
+          <h3 class="small">Exploitation (Lab-only)</h3>
+          <p class="muted">Exploits validated impact; command-level and payload details are kept securely in the lab notebook. Recommendation: enable EDR and re-scan post-remediation.</p>
+        </div>
+
+        <div class="section">
+          <h2>Evidence (Lab Screenshots)</h2>
+          <div class="screens">
+            <img src="Github1.png" alt="DNS Enumeration using dnsenum">
+            <img src="Github2.png" alt="Username enumeration with Sherlock">
+            <img src="Github3.png" alt="Nmap scan output (Windows XP/Server 2003)">
+            <img src="Github4.png" alt="TheHarvester / OSINT results">
+            <img src="Github5.jpg" alt="Metasploit exploit setup (lab)">
+            <img src="Github6.jpg" alt="Metasploit module output (lab)">
+          </div>
+          <p class="small">All screenshots were captured from an isolated lab network for educational purposes (ITT-340). Replace filenames if your images differ.</p>
+        </div>
+
+        <div class="section">
+          <h2>Conclusion & Next Steps</h2>
+          <p class="muted">Prioritize patching and replacement of EOL systems; harden network services; implement centralized logging and detection; schedule a follow-up verification scan and remediation audit.</p>
+        </div>
+      </main>
+
+      <!-- right column -->
+      <aside class="card right">
+        <div class="section">
+          <h3>Quick Links</h3>
+          <p class="small"><a class="btn" href="https://github.com/Brady0Reid/Pen-Test-Report" target="_blank">Repository</a> <a class="btn" href="mailto:bradycreid@protonmail.com">Contact</a></p>
+        </div>
+
+        <div class="section">
+          <h3>Project Facts</h3>
+          <table>
+            <tr><th>Scope</th><td>Lab VMs only</td></tr>
+            <tr><th>Duration</th><td>Oct — Nov 2024</td></tr>
+            <tr><th>Author</th><td>Brady Reid</td></tr>
+            <tr><th>Version</th><td>2.0</td></tr>
+          </table>
+        </div>
+
+        <div class="section">
+          <h3>At-a-glance</h3>
+          <ul class="muted">
+            <li>Patch & upgrade EOL systems</li>
+            <li>Harden TLS/SSH</li>
+            <li>Restrict remote access</li>
+            <li>Deploy endpoint detection</li>
+            <li>Re-scan after remediation</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <div class="small">© Brady Reid — Penetration testing performed in an isolated lab environment for educational purposes only.</div>
+    </footer>
+  </div>
+</body>
+</html>

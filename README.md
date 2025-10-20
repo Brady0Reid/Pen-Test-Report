@@ -71,7 +71,7 @@ Experience the full formatted report (dark theme, responsive layout, and banner 
 ---
 
 ## 📬 Contact  
-📧 **Email:** [bradycreid@protonmail.com](mailto:bradycreid@protonmail.com)  
+📧 **Email:** [bradyreid2004@gmail.com](mailto:bradyreid2004@gmail.com)  
 🔗 **LinkedIn:** [Brady Reid](https://www.linkedin.com/in/brady-reidin)  
 💻 **GitHub:** [@Brady0Reid](https://github.com/Brady0Reid)
 
